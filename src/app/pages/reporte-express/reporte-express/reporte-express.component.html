@@ -1,0 +1,177 @@
+<div class="grid justify-content-between">
+  <div class="col-12 md:col-12 lg:col-6">
+    <div class="col-12">
+      <span class="font-bold form-text">Elige una consulta</span>
+    </div>
+    <p-dropdown
+      placeholder="Elije una consulta"
+      [editable]="true"
+      [(ngModel)]="tipoConsultaSeleccionada"
+      (onChange)="seleccionarOpcion($event.value)"
+      [options]="tipoConsulta"
+    >
+    
+    </p-dropdown>
+    <!-- <span class="form-text text-red-600">Debe Elegir una consulta </span> -->
+  </div>
+  <div
+    class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-center lg:justify-content-end"
+  >
+    <p-button label="Enviar Solicitud" styleClass="p-button-raised" (click)="enviarSolicitudConsulta()"></p-button>
+  </div>
+</div>
+<form [formGroup]="queryForm">
+  <p-blockUI [blocked]="blockedDocument"></p-blockUI>
+  <!-- <p-toast></p-toast> -->
+  <div class="py-2">
+    <div class="flex w-full py-2 px-3 gap-2">
+      <label class="font-bold align-self-center">Parámetros de envió</label>
+      <p-checkbox
+        [binary]="true"
+        (onChange)="chkAtrrchanged($event, 0)"
+      ></p-checkbox>
+    </div>
+    <div
+      class="surface-card py-2 px-3 border-round shadow-2"
+      [ngClass]="{ disabledDiv: isDisabledDivAtrr }"
+    >
+      <div class="grid">
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="grid">
+            <div class="col-12">
+              <div class="grid">
+                <div class="col-12">
+                  <label class="font-bold">Número Producto: </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <input type="text" pInputText placeholder="Numero Producto" />
+            </div>
+          </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="grid">
+            <div class="col-12">
+              <div class="grid">
+                <div class="col-12">
+                  <label class="font-bold">Número Tienda: </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <input type="text" pInputText placeholder="Numero Tienda" />
+            </div>
+          </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="grid">
+            <div class="col-12">
+              <div class="grid">
+                <div class="col-12">
+                  <label class="font-bold">Fecha Inicio: </label>
+                  <!-- <label>PULL</label>
+                  <label>{{
+                    obj ? obj.listProductoModel[4].atR_CODE_DESC : ""
+                  }}</label> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <p-calendar [showIcon]="true"></p-calendar>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="grid">
+            <div class="col-12">
+              <div class="grid">
+                <div class="col-12">
+                  <label class="font-bold">Fecha Fin: </label>
+                  <!-- <label>Sforzo</label>
+                  <label>{{
+                    obj ? obj.listProductoModel[2].atR_CODE_DESC : ""
+                  }}</label> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <p-calendar [showIcon]="true"></p-calendar>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="card-text-area">
+  <div class="sql-editor">
+    <div class="editor-container">
+      <div class="line-numbers">
+        <div *ngFor="let line of lineNumbers">{{ line }}</div>
+      </div>
+      <textarea
+        disabled="true"
+        [rows]="lineNumbers.length"
+        cols="30"
+        class="textarea"
+        pInputTextarea
+        [(ngModel)]="textQuery"
+        (input)="updateLineNumbers()"
+      ></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-result">
+  <button
+    *ngIf="resultado.length > 0"
+    class="btn-exportar"
+    (click)="exportarExcel()"
+  >
+    Exportar a Excel
+  </button>
+
+  <div class="tabla-container">
+    <table class="mi-tabla">
+      <thead>
+        <tr>
+          <!-- Verifica si resultado tiene elementos -->
+          <ng-container *ngIf="resultado.length > 0">
+            <!-- Utiliza el primer elemento (índice 0) para obtener los nombres de las columnas -->
+            <th *ngFor="let columna of obtenerNombresColumnas(resultado[0])">
+              {{ columna }}
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Utiliza la directiva *ngFor de ngx-pagination para iterar sobre los elementos de la página actual -->
+        <tr
+          *ngFor="
+            let resultadoItem of resultado
+              | paginate
+                : {
+                    itemsPerPage: elementosPorPagina,
+                    currentPage: paginaActual,
+                    id: 'miTabla'
+                  }
+          "
+        >
+          <!-- Itera sobre las propiedades de cada objeto para mostrar los valores -->
+          <td *ngFor="let columna of obtenerNombresColumnas(resultadoItem)">
+            {{ resultadoItem[columna] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="paginador">
+    <!-- Agrega el paginador aquí -->
+    <pagination-controls
+      (pageChange)="paginaActual = $event"
+      id="miTabla"
+    ></pagination-controls>
+  </div>
+</div>

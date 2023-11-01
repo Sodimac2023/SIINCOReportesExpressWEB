@@ -1,0 +1,23 @@
+<div class="layout-sidebar">
+  <!-- <div
+    class="flex flex-row justify-content-center align-items-center h-auto py-2"
+  >
+    <span class="p-input-icon-right w-auto">
+      <i class="pi pi-search" style="color: var(--primary-color)"></i>
+      <input type="text" class="w-full" pInputText />
+    </span>
+  </div> -->
+
+  <ul class="layout-menu pl-4">
+    <ng-container *ngFor="let item of model; let i = index">
+      <li
+        app-menuitem
+        *ngIf="!item.separator"
+        [item]="item"
+        [index]="i"
+        [root]="true"
+      ></li>
+      <li *ngIf="item.separator" class="menu-separator"></li>
+    </ng-container>
+  </ul>
+</div>

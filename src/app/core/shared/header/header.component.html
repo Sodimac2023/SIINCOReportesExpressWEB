@@ -1,0 +1,77 @@
+<div
+  class="layout-topbar border-bottom-1"
+  [ngClass]="
+    layoutService.config.colorScheme === 'light'
+      ? 'border-gray-300'
+      : 'border-bluegray-600'
+  "
+>
+
+  <button
+    type="button"
+    #menubutton
+    class="p-link layout-menu-button layout-topbar-button p-4"
+    style="color: #2d77c2"
+    (click)="layoutService.onMenuToggle()"
+  >
+    <i class="pi pi-bars"></i>
+  </button>
+  <div style="border-right: 2px solid #bbc2c8; height: 70px"></div>
+  <a class="layout-topbar-logo">
+    <img
+      width="130"
+      height="40"
+      alt="logo"
+      style="margin-left: 0.9rem"
+      src="../../../../assets/logo_home.png"
+    />
+    <div
+      class="flex flex-column"
+      style="color: var(--primary-color); margin-left: 1.9rem"
+    >
+      <!-- <span class="text-sm">Última visita 2023-02-28 06:44 Hora Colombia</span> -->
+    </div>
+  </a>
+
+  <button
+    type="button"
+    #topbarmenubutton
+    class="p-link layout-topbar-menu-button layout-topbar-button"
+    (click)="layoutService.showProfileSidebar()"
+  >
+    <i class="pi pi-ellipsis-v"></i>
+  </button>
+  <div
+    #topbarmenu
+    class="layout-topbar-menu"
+    [ngClass]="{
+      'layout-topbar-menu-mobile-active':
+        layoutService.state.profileSidebarVisible
+    }"
+  >
+    <div
+      class="flex flex-column mr-4 font-semibold sm:mb-2"
+      style="margin-top: 9px !important"
+    >
+      <i class="pi pi-bell text-3xl" pBadge value="2" severity="danger"></i>
+    </div>
+
+    <div
+      class="flex flex-column font-semibold sm:mb-2"
+      style="color: var(--primary-color); margin-top: 5px"
+    >
+      <span class="text-sm">Luis Alejandro Villamil</span>
+      <small class="lg:text-right"
+        >Analista Comercial Precios y Promociones</small
+      >
+    </div>
+    <button type="button" class="p-link layout-topbar-button">
+      <!-- <img width="35" height="35" alt="user" /> -->
+      <i class="pi pi-user" style="font-size: 2rem"></i>
+    </button>
+    <button type="button" class="p-link layout-topbar-button mr-4">
+      <!-- <img width="35" height="35" alt="user" /> -->
+      <i class="pi pi-sign-out" style="font-size: 2rem"></i>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+.layout-main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+  padding: 4.9rem 0rem 0rem 0rem;
+  // background: transparent
+  //   linear-gradient(180deg, rgba(243, 247, 249, 1) 0%, var(--300_-6fb5e9) 100%)
+  //   0% 0% no-repeat padding-box;
+  // background: transparent
+  //   linear-gradient(
+  //     180deg,
+  //     rgba(243, 247, 249, 1) 0%,
+  //     rgba(111, 181, 233, 1) 100%
+  //   )
+  //   0% 0% no-repeat padding-box;
+  // opacity: 1;
+}
+
+.layout-main {
+  flex: 1 1 auto;
+}
