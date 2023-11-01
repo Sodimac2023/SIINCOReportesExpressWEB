@@ -10,14 +10,17 @@
       (onChange)="seleccionarOpcion($event.value)"
       [options]="tipoConsulta"
     >
-    
     </p-dropdown>
     <!-- <span class="form-text text-red-600">Debe Elegir una consulta </span> -->
   </div>
   <div
     class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-center lg:justify-content-end"
   >
-    <p-button label="Enviar Solicitud" styleClass="p-button-raised" (click)="enviarSolicitudConsulta()"></p-button>
+    <p-button
+      label="Enviar Solicitud"
+      styleClass="p-button-raised"
+      (click)="enviarSolicitudConsulta()"
+    ></p-button>
   </div>
 </div>
 <form [formGroup]="queryForm">
@@ -125,14 +128,17 @@
 </div>
 
 <div class="tabla-result">
-  <button
-    *ngIf="resultado.length > 0"
-    class="btn-exportar"
-    (click)="exportarExcel()"
+  <div
+    class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-start lg:justify-content-start"
   >
-    Exportar a Excel
-  </button>
-
+    <p-button
+      label="Exportar a Excel"
+      styleClass="p-button-raised"
+      *ngIf="resultado.length > 0"
+      class="btn-exportar"
+      (click)="exportarExcel()"
+    ></p-button>
+  </div>
   <div class="tabla-container">
     <table class="mi-tabla">
       <thead>
