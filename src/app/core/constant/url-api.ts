@@ -4,6 +4,7 @@ export const URLCONTROLADOR = {
   costo: 'api/Costo/v1/Costo',
   precio: 'api/Costo/v1/Precios',
   margen: 'api/Producto/v1/Costo',
+  login: "login/",
 };
 export const URLQUERYS = {
   querys: 'api/ReporteExpress',

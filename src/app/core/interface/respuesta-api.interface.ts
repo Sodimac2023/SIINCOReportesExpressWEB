@@ -5,4 +5,5 @@ export interface IRespuestaApi {
   data: any;
   isSuccessful: boolean;
   result :any;
+  messages:string
 }

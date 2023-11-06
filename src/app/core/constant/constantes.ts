@@ -52,3 +52,15 @@ export const regex = {
     '^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]+[a-zA-Z0-9áéíóúÁÉÍÓÚñÑÚüÜ ]*',
   soloLetras: '^[a-zA-Z]+[a-zA-Z ]*',
 };
+export const SodimacConstant = {
+  headers: {
+    userHeaderName: "SmcAthUs",
+    tokenHeaderName: "SmcAthTkn",
+  },
+  localStorageSet: {
+    userHeaderName: "UsuarioSesion",
+    tokenHeaderName: "Usuario",
+    releaseVersion: "SMAC_VER_RELEASE",
+    developmentVersion: "SMAC_VER_DEV",
+  },
+};

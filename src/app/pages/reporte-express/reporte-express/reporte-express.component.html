@@ -17,6 +17,7 @@
     class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-center lg:justify-content-end"
   >
     <p-button
+      type="submit"
       label="Enviar Solicitud"
       styleClass="p-button-raised"
       (click)="enviarSolicitudConsulta()"
@@ -24,8 +25,17 @@
   </div>
 </div>
 <form [formGroup]="queryForm">
+  <!-- <div
+    class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-center lg:justify-content-end"
+  >
+    <p-button
+      label="Enviar Solicitud"
+      styleClass="p-button-raised"
+      (click)="enviarSolicitudConsulta()"
+    ></p-button>
+  </div> -->
   <p-blockUI [blocked]="blockedDocument"></p-blockUI>
-  <!-- <p-toast></p-toast> -->
+  <p-toast></p-toast>
   <div class="py-2">
     <div class="flex w-full py-2 px-3 gap-2">
       <label class="font-bold align-self-center">Parámetros de envió</label>
@@ -39,7 +49,7 @@
       [ngClass]="{ disabledDiv: isDisabledDivAtrr }"
     >
       <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="noProducto">
           <div class="grid">
             <div class="col-12">
               <div class="grid">
@@ -49,11 +59,20 @@
               </div>
             </div>
             <div class="col-12">
-              <input type="text" pInputText placeholder="Numero Producto" />
+              <input
+                type="number"
+                pInputText
+                placeholder="Numero Producto"
+                formControlName="numeroProducto"
+                maxlength="12"
+              />
+              <span class="form-text text-red-600" *ngIf="tamanioNoTienda"
+                >El campo tiene muchos caracteres</span
+              >
             </div>
           </div>
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="noTienda">
           <div class="grid">
             <div class="col-12">
               <div class="grid">
@@ -63,43 +82,52 @@
               </div>
             </div>
             <div class="col-12">
-              <input type="text" pInputText placeholder="Numero Tienda" />
+              <input
+                type="number"
+                pInputText
+                placeholder="Numero Tienda"
+                formControlName="numeroTienda"
+                maxlength="5"
+              />
+              <span class="form-text text-red-600" *ngIf="tamanioNoTienda"
+                >El campo tiene muchos caracteres</span
+              >
             </div>
           </div>
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
-          <div class="grid">
-            <div class="col-12">
-              <div class="grid">
-                <div class="col-12">
-                  <label class="font-bold">Fecha Inicio: </label>
-                  <!-- <label>PULL</label>
-                  <label>{{
-                    obj ? obj.listProductoModel[4].atR_CODE_DESC : ""
-                  }}</label> -->
+        <div *ngIf="rangoFecha">
+          <div class="col-12 md:col-6 lg:col-3">
+            <div class="grid">
+              <div class="col-12">
+                <div class="grid">
+                  <div class="col-12">
+                    <label class="font-bold">Fecha Inicio: </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-12">
-              <p-calendar [showIcon]="true"></p-calendar>
+              <div class="col-12">
+                <p-calendar
+                  [showIcon]="true"
+                  formControlName="fechaInicio"
+                ></p-calendar>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-12 md:col-6 lg:col-3">
-          <div class="grid">
-            <div class="col-12">
-              <div class="grid">
-                <div class="col-12">
-                  <label class="font-bold">Fecha Fin: </label>
-                  <!-- <label>Sforzo</label>
-                  <label>{{
-                    obj ? obj.listProductoModel[2].atR_CODE_DESC : ""
-                  }}</label> -->
+          <div class="col-12 md:col-6 lg:col-3">
+            <div class="grid">
+              <div class="col-12">
+                <div class="grid">
+                  <div class="col-12">
+                    <label class="font-bold">Fecha Fin: </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-12">
-              <p-calendar [showIcon]="true"></p-calendar>
+              <div class="col-12">
+                <p-calendar
+                  [showIcon]="true"
+                  formControlName="fechaFin"
+                ></p-calendar>
+              </div>
             </div>
           </div>
         </div>

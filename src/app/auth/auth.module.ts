@@ -4,10 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthRoutingModule } from './auth-routing.module';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [LoginComponent, RegisterComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AuthRoutingModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AuthRoutingModule,ButtonModule, InputTextModule],
   exports: [],
 })
 export class AuthModule {}

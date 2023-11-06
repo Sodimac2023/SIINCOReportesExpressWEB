@@ -12,6 +12,7 @@ import { ISolicitudConsulta } from 'src/app/domain/interface/solicitudConsulta.i
 @Component({
   selector: 'app-reporte-express',
   templateUrl: './reporte-express.component.html',
+  providers: [MessageService],
   styleUrls: ['./reporte-express.component.scss'],
 })
 export class ReporteExpressComponent implements OnInit {
@@ -26,6 +27,17 @@ export class ReporteExpressComponent implements OnInit {
   public paginaActual: number = 1;
   public elementosPorPagina: number = 10;
   public objSolicitudConsulta: any = null;
+  public noProducto: boolean = false;
+  public noTienda: boolean = false;
+  public rangoFecha: boolean = false;
+  public tamanioNoProducto :boolean =false;
+  public tamanioNoTienda :boolean =false;
+
+  // public noProductoSolicitud = new FormControl('');
+  // public noTiendaSolicitud  = new FormControl('');
+  // public fechaInicioSolicitud  = new FormControl('');
+  // public fechaFinSolicitud  = new FormControl('');
+
   public tipoConsulta: {
     label: string;
     value: string;
@@ -35,7 +47,8 @@ export class ReporteExpressComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private _siincoReporteExpressStateService: ReporteExpressSateService
+    private _siincoReporteExpressStateService: ReporteExpressSateService,
+    private _messageService: MessageService
   ) {
     this.queryForm = this.fb.group({
       // tipoConsultaSeleccionada: this.opcionSeleccionada,
@@ -97,19 +110,27 @@ export class ReporteExpressComponent implements OnInit {
       (_, index) => index + 1
     );
   }
-  // seleccionarOpcion(opcion: string) {
-  //   console.log('hola munco criuel');
-  //   const seleccion = this.tipoConsulta.find((item) => item.value === opcion);
-  //   if (seleccion) {
-  //     // Establece el textoQuery con la opción seleccionada
-  //     this.queryForm.controls['textQuery'].setValue(seleccion.value);
-  //     this.updateLineNumbers();
-  //   }
-  // }
+
   public seleccionarOpcion(opcion: string) {
     // Encuentra la opción seleccionada en el arreglo tipoConsulta
     const seleccion = this.tipoConsulta.find((item) => item.value === opcion);
     this.objSolicitudConsulta = seleccion;
+    const parametersString = this.objSolicitudConsulta.parameters;
+    const parametersArray = parametersString
+      .split(',')
+      .map((param: string) => param.trim());
+
+    parametersArray.forEach((param: string) => {
+      if (param.endsWith('S')) {
+        if (param.startsWith('TIENDA-')) {
+          this.noTienda = true;
+        } else if (param.startsWith('SKU-')) {
+          this.noProducto = true;
+        } else if (param.startsWith('RANGO-')) {
+          this.rangoFecha = true;
+        }
+      }
+    });
     if (seleccion) {
       // Establece el textoQuery con la opción seleccionada
       this.textQuery = seleccion.value;
@@ -136,48 +157,94 @@ export class ReporteExpressComponent implements OnInit {
             parameters: item.parametroS_QUERY,
           })
         );
-        console.log('estas son las variables', this.tipoConsulta);
+        this.showMessage(
+          'Se cargaron las consultas disponibles exitosamente',
+          'success',
+          'Éxito'
+        );
       } else {
-        // this.showMessage(objDatos.mensaje, 'error', 'Error');
+        this.showMessage(objDatos.messages, 'error', 'Error');
       }
       this.blockedDocument = false;
     } catch (error) {
-      // this.showMessage("eRORRR", 'error', 'Error');
+      this.showMessage('eRORRR', 'error', 'Error');
       this.blockedDocument = false;
     }
   }
   public async enviarSolicitudConsulta() {
-    try {
-      const solicitud: ISolicitudConsulta = {
-        iN_ID_QUERY: this.objSolicitudConsulta.id,
-        iN_PARAM01: this.objSolicitudConsulta.parameters || '',
-        iN_PARAM02: '' || '',
-        iN_PARAM03: '' || '',
-        iN_PARAM04: '' || '',
-        iN_PARAM05: '' || '',
-        iN_PARAM06: '' || '',
-        iN_PARAM07: '' || '',
-        iN_PARAM08: '' || '',
-        iN_PARAM09: '' || '',
-        iN_PARAM010: '' || '',
-      };
-      let objDatos =
-        await this._siincoReporteExpressStateService.PostEnviarSolicitudConsulta(
-          solicitud
-        );
-      if (objDatos.isSuccessful) {
-        this.resultado =  this.procesarValores(objDatos.result)
+    if (this.objSolicitudConsulta) {
+      let sku = this.queryForm.controls['numeroProducto'].value;
+      let nTienda = this.queryForm.controls['numeroTienda'].value;
+      let fechaInicio = this.queryForm.controls['fechaInicio'].value;
+      let fechaFin = this.queryForm.controls['fechaFin'].value;
 
+      if (
+        (this.noProducto && sku.toString().length > 0) ||
+        (this.noTienda && nTienda.toString().length > 0) ||
+        (this.rangoFecha && fechaInicio.toString().length > 0) ||
+        (this.rangoFecha && fechaFin.toString().length > 0)
+      ) {
+        // if ((sku.toString().length > 0 && sku.toString().length < 13)) {
+        //   this.tamanioNoProducto = true;
+        //   return; // Sale temprano del método si la condición no se cumple
+        // }
+        // // if(!(nTienda.toString().length > 0 && nTienda.toString().length < 5)){
+        // //   this.tamanioNoTienda = true;
+        // //   return;
+        // // }
+        try {
+          this.tamanioNoProducto = true;
+          this.tamanioNoTienda = true;
+          const solicitud: ISolicitudConsulta = {
+            iN_ID_QUERY: this.objSolicitudConsulta.id,
+            iN_PARAM01:
+              this.noProducto && sku.toString().length > 0
+                ? sku.toString()
+                : '',
+            iN_PARAM02:
+              this.noTienda && nTienda.toString().length > 0
+                ? nTienda.toString()
+                : '',
+            iN_PARAM03:
+              this.rangoFecha && fechaInicio.toString().length > 0
+                ? fechaInicio.toString()
+                : '',
+            iN_PARAM04:
+              this.rangoFecha && fechaFin.length > 0 ? fechaFin.toString() : '',
+            iN_PARAM05: '' || '',
+            iN_PARAM06: '' || '',
+            iN_PARAM07: '' || '',
+            iN_PARAM08: '' || '',
+            iN_PARAM09: '' || '',
+            iN_PARAM010: '' || '',
+          };
+          let objDatos =
+            await this._siincoReporteExpressStateService.PostEnviarSolicitudConsulta(
+              solicitud
+            );
+          if (objDatos.isSuccessful) {
+            this.resultado = this.procesarValores(objDatos.result);
+            this.showMessage('Consulta Exitosa', 'success', 'Éxito');
+          } else {
+            this.showMessage(objDatos.messages, 'error', 'Error');
+          }
+          this.blockedDocument = false;
+        } catch (error) {
+          this.showMessage('Error', 'error', 'Error');
+          this.blockedDocument = false;
+        }
       } else {
-        // this.showMessage(objDatos.mensaje, 'error', 'Error');
+        this.showMessage(
+          'Los parametros son obligatorios',
+          'warn',
+          'Advertencia'
+        );
       }
-      this.blockedDocument = false;
-    } catch (error) {
-      // this.showMessage("eRORRR", 'error', 'Error');
-      this.blockedDocument = false;
+    } else {
+      this.showMessage('Elige una consulta', 'warn', 'Advertencia');
     }
   }
- // Función para procesar los valores antes de mostrarlos
+  // Función para procesar los valores antes de mostrarlos
   procesarValores(data: any[]): any[] {
     return data.map((item) => {
       const processedItem: any = {};
@@ -191,11 +258,11 @@ export class ReporteExpressComponent implements OnInit {
       return processedItem;
     });
   }
-  // public showMessage(detail: string, severity: string, summary: string): void {
-  //   this._messageService.add({
-  //     severity: severity,
-  //     summary: summary,
-  //     detail: detail,
-  //   });
-  // }
+  public showMessage(detail: string, severity: string, summary: string): void {
+    this._messageService.add({
+      severity: severity,
+      summary: summary,
+      detail: detail,
+    });
+  }
 }

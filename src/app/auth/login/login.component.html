@@ -1,1 +1,46 @@
-<p>login works!</p>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <div class="fadeIn first mt-4 mb-3">
+      <img src="../../../assets/logo_home.png" id="icon" alt="User Icon" />
+    </div>
+    <form novalidate [formGroup]="loginForm">
+      <div class="col-12">
+        <input
+          type="text"
+          pInputText
+          placeholder="Usuario"
+          formControlName="usuario"
+          maxlength="10"
+        />
+        <!-- <span class="form-text text-red-600">El campo tiene muchos caracteres</span -->
+      </div>
+      <div class="col-12">
+        <input
+          pInputText
+          type="password"
+          placeholder="Contraseña"
+          formControlName="contrasena"
+          required
+          maxlength="16"
+          minlength="minPassword"
+        />
+      </div>
+      <!-- <input
+          type="submit"
+          class="fadeIn fourth"
+          (click)="login()"
+          value="Ingresar"
+        /> -->
+      <div
+        class=" pt-3 mb-3 flex justify-content-center md:justify-content-center lg:justify-content-center"
+      >
+        <p-button
+          type="submit"
+          label="Ingresar"
+          styleClass="p-button-raised"
+          (click)="login()"
+        ></p-button>
+      </div>
+    </form>
+  </div>
+</div>

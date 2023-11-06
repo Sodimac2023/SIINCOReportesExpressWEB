@@ -54,6 +54,19 @@ const routes: Routes = [
     ],
   },
   {
+    path: '',
+    component: AdminLayoutComponent,
+    children: [
+      {
+        path: 'login',
+        loadChildren: () =>
+          import('./auth/auth.module').then(
+            (m) => m.AuthModule
+          ),
+      },
+    ],
+  },
+  {
     path: 'reporte-express-component',
     component: ReporteExpressComponent,
     pathMatch: 'full',

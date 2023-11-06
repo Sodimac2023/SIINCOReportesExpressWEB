@@ -13,7 +13,9 @@ export const environment = {
   showHeader: true, //Mostrar header
   showMenu: true, //Mostrar Menu
   showFooter: true, //Mostrar footer
-  apiSiicoReporteExpress:'http://10.23.14.175:9156',
+  apiSiicoReporteExpress: 'http://10.23.14.175:9156',
+  urlApi: 'http://localhost:60504/api/',
+  urlAuthentication: 'http://localhost:62607/api/Autentication/',
   // apiMultitask: 'http://localhost:7073',
   apiMultitask: 'http://10.23.14.175:9117',
   // apiPIM: 'http://10.23.14.209',
