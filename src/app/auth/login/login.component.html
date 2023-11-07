@@ -31,8 +31,11 @@
           (click)="login()"
           value="Ingresar"
         /> -->
+      <span class="form-text text-red-600" *ngIf="mensajeFlag">{{
+        mensaje
+      }}</span>
       <div
-        class=" pt-3 mb-3 flex justify-content-center md:justify-content-center lg:justify-content-center"
+        class="pt-3 mb-3 flex justify-content-center md:justify-content-center lg:justify-content-center"
       >
         <p-button
           type="submit"

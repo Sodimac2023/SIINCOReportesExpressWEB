@@ -51,7 +51,7 @@ export class LoginService extends BaseService{
 
   lastUser() {
     return this.http.get<string>(
-      `${environment.urlApi}${URLCONTROLADOR.login}LastUser`,
+      `${environment.urlAuthentication}LastUser`,
       { headers: this.generateBasicHeaders() }
     );
   }

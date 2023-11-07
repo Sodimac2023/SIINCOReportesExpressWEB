@@ -34,13 +34,14 @@ html {
   /* STRUCTURE */
   
   .wrapper {
-    display: flex;
-    align-items: center;
-    flex-direction: column; 
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: column !important; 
+    justify-content: center !important;
     width: 100%;
     min-height: 100%;
     padding: 20px;
+    padding-top: 150px;
   }
   
   #formContent {
