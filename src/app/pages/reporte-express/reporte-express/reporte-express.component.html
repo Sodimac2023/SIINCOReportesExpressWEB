@@ -21,6 +21,7 @@
       label="Enviar Solicitud"
       styleClass="p-button-raised"
       (click)="enviarSolicitudConsulta()"
+      [disabled]="!queryForm.valid"
     ></p-button>
   </div>
 </div>
@@ -49,7 +50,7 @@
       [ngClass]="{ disabledDiv: isDisabledDivAtrr }"
     >
       <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3" *ngIf="noProducto">
+        <div class="col-12 md:col-6 lg:col-3">
           <div class="grid">
             <div class="col-12">
               <div class="grid">
@@ -60,15 +61,18 @@
             </div>
             <div class="col-12">
               <input
-                type="number"
+                type="text"
+                onlyNumbers
                 pInputText
                 placeholder="Numero Producto"
                 formControlName="numeroProducto"
-                maxlength="12"
               />
-              <span class="form-text text-red-600" *ngIf="tamanioNoTienda"
-                >El campo tiene muchos caracteres</span
+              <span
+                class="form-text text-red-600"
+                *ngIf="campoNoValido('numeroProducto')"
               >
+                {{ listaErroresMensajes("numeroProducto") }}
+              </span>
             </div>
           </div>
         </div>
@@ -83,20 +87,23 @@
             </div>
             <div class="col-12">
               <input
-                type="number"
+                type="text"
                 pInputText
                 placeholder="Numero Tienda"
                 formControlName="numeroTienda"
-                maxlength="5"
+                onlyNumbers
               />
-              <span class="form-text text-red-600" *ngIf="tamanioNoTienda"
-                >El campo tiene muchos caracteres</span
+              <span
+                class="form-text text-red-600"
+                *ngIf="campoNoValido('numeroTienda')"
               >
+                {{ listaErroresMensajes("numeroTienda") }}
+              </span>
             </div>
           </div>
         </div>
-        <div *ngIf="rangoFecha">
-          <div class="col-12 md:col-6 lg:col-3">
+       
+          <div class="col-12 md:col-6 lg:col-3" *ngIf="rangoFecha">
             <div class="grid">
               <div class="col-12">
                 <div class="grid">
@@ -113,7 +120,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 md:col-6 lg:col-3" *ngIf="rangoFecha">
             <div class="grid">
               <div class="col-12">
                 <div class="grid">
@@ -133,7 +140,7 @@
         </div>
       </div>
     </div>
-  </div>
+  
 </form>
 
 <div class="card-text-area">

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { RespuestaGenerica } from 'src/app/core/interface/respuesta-generica';
 import { LoginService } from './login.service';
 import { Usuario } from 'src/app/core/interface/user.interface';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     // private spinner: NgxSpinnerService,
     private fb: FormBuilder,
     private rout: Router,
-    private _seguridad: LoginService
+    private _seguridad: LoginService,
+    private ngxService: NgxUiLoaderService
   ) {
     this.loginForm = this.fb.group({
       usuario: ['', [Validators.required]],
@@ -65,7 +67,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-
+    this.ngxService.start();
     const usuario = new Usuario();
     let user = this.loginForm.controls['usuario'].value;
     let pass = this.loginForm.controls['contrasena'].value;
@@ -86,6 +88,7 @@ export class LoginComponent implements OnInit {
         this._seguridad.setData(data);
         // Coloca aquí la lógica que se ejecutaba en finalize
       },
+      
       (err) => {
         this.mensajeFlag = true;
         this.mensaje = err
@@ -95,5 +98,6 @@ export class LoginComponent implements OnInit {
         // Coloca aquí la lógica que se ejecutaba en finalize para los errores
       }
     );
+    this.ngxService.stop();
   }
 }

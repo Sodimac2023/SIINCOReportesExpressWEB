@@ -18,8 +18,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [ReporteExpressComponent],
+
   imports: [
-    CommonModule, 
+    CommonModule,
     ReporteExpressRoutingModule,
     FormsModule,
     TableModule,
@@ -35,6 +36,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ToastModule,
     HttpClientModule,
     NgxPaginationModule,
-  ]
+  ],
 })
 export class ReporteExpressModule {}

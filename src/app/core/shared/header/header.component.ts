@@ -29,5 +29,7 @@ export class HeaderComponent implements OnInit {
     this.name = data.Data?.Name;
     this.cargo = data.Data?.Cargo;
   }
-  
+  onCerrarSesion() {
+    this._seguridad.logout();
+  }
 }

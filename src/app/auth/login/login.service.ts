@@ -58,6 +58,6 @@ export class LoginService extends BaseService{
 
   logout() {
     sessionStorage.removeItem(USER_DATA);
-    this._routerService.navigate(["/auth"]);
+    this._routerService.navigate(["/login"]);
   }
 }

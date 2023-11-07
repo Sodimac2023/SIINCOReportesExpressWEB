@@ -8,6 +8,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
+import { LoginService } from 'src/app/auth/login/login.service';
 import { environment } from 'src/environments/environment';
 
 /**
@@ -15,7 +16,7 @@ import { environment } from 'src/environments/environment';
  */
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _seguridad: LoginService) {}
 
   public isUserAuthenticated: boolean = false;
 
@@ -23,7 +24,12 @@ export class AuthGuard implements CanActivate, CanLoad {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    return true;
+    if (this._seguridad.getData().EstadoProceso) {
+      return true;
+    } else {
+      this.router.navigate(['/login']);
+      return false;
+    }
   }
 
   canLoad(route: Route): boolean {

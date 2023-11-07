@@ -22,16 +22,6 @@ export class MenuComponent implements OnInit {
         ],
       },
       {
-        label: 'Features',
-        items: [
-          {
-            label: 'Features',
-            icon: 'pi pi-fw pi-id-card',
-            routerLink: ['/features'],
-          },
-        ],
-      },
-      {
         label: 'Reporte Express',
         items: [
           {

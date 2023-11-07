@@ -7,6 +7,7 @@ import { MenuComponent } from './menu/menu.component';
 import { AppMenuitemComponent } from './menu/app.menuitem.component';
 import { RouterModule } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
+import { OnlyNumbersDirective } from '../directive/only-numbers.directive';
 // import { LblTituloComponent } from './lbl-titulo/lbl-titulo.component';
 // import { LblSubtituloComponent } from './lbl-subtitulo/lbl-subtitulo.component';
 // import { LabelComponent } from './label/label.component';
@@ -17,8 +18,9 @@ import { BadgeModule } from 'primeng/badge';
     HeaderComponent,
     MenuComponent,
     AppMenuitemComponent,
+    OnlyNumbersDirective
   ],
   imports: [CommonModule, HttpClientModule, RouterModule, BadgeModule],
-  exports: [FooterComponent, HeaderComponent, MenuComponent],
+  exports: [FooterComponent, HeaderComponent, MenuComponent,OnlyNumbersDirective],
 })
 export class SharedModule {}

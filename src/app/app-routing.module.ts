@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { Page404Component } from './core/page404/page404.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { environment } from '../environments/environment';
-import { FeaturesComponent } from './pages/features/features/features.component';
 import { ReporteExpressComponent } from './pages/reporte-express/reporte-express/reporte-express.component';
+import { AuthGuard } from './core/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -30,19 +30,7 @@ const routes: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
-    children: [
-      {
-        path: 'features',
-        loadChildren: () =>
-          import('./pages/features/features.module').then(
-            (m) => m.FeaturesModule
-          ),
-      },
-    ],
-  },
-  {
-    path: '',
-    component: AdminLayoutComponent,
+    canActivate :[AuthGuard],
     children: [
       {
         path: 'reporte-express',
@@ -72,11 +60,6 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'skufeatures',
-    component: FeaturesComponent,
-    pathMatch: 'full',
-  },
-  {
     path: '**',
     component: Page404Component,
   },
@@ -85,5 +68,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
+  providers: [AuthGuard], 
 })
 export class AppRoutingModule {}
