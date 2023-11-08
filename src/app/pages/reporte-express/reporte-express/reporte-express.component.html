@@ -40,7 +40,7 @@
       [ngClass]="{ disabledDiv: isDisabledDivAtrr }"
     >
       <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="noProducto">
           <div class="grid">
             <div class="col-12">
               <div class="grid">
@@ -103,6 +103,7 @@
             </div>
             <div class="col-12">
               <p-calendar
+                dateFormat="dd/mm/yy"
                 [showIcon]="true"
                 formControlName="fechaInicio"
               ></p-calendar>
@@ -120,6 +121,7 @@
             </div>
             <div class="col-12">
               <p-calendar
+                dateFormat="dd/mm/yy"
                 [showIcon]="true"
                 formControlName="fechaFin"
               ></p-calendar>

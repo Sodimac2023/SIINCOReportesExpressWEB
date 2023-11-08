@@ -21,7 +21,70 @@ import { MenuService } from '../../services/ui/app.menu.service';
 
 @Component({
   selector: '[app-menuitem]',
-  template: ` <!-- Contenido del menú --> `,
+  template: `
+    <ng-container>
+      <div
+        *ngIf="root && item.visible !== false"
+        class="layout-menuitem-root-text"
+      >
+        {{ item.label }}
+      </div>
+      <a
+        *ngIf="(!item.routerLink || item.items) && item.visible !== false"
+        [attr.href]="item.url"
+        (click)="itemClick($event)"
+        [ngClass]="item.class"
+        [attr.target]="item.target"
+        tabindex="0"
+        pRipple
+      >
+        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+        <span class="layout-menuitem-text">{{ item.label }}</span>
+        <i
+          class="pi pi-fw pi-angle-down layout-submenu-toggler"
+          *ngIf="item.items"
+        ></i>
+      </a>
+      <a
+        *ngIf="item.routerLink && !item.items && item.visible !== false"
+        (click)="itemClick($event)"
+        [ngClass]="item.class"
+        [routerLink]="item.routerLink"
+        routerLinkActive="active-route"
+        [fragment]="item.fragment"
+        [queryParamsHandling]="item.queryParamsHandling"
+        [preserveFragment]="item.preserveFragment"
+        [skipLocationChange]="item.skipLocationChange"
+        [replaceUrl]="item.replaceUrl"
+        [state]="item.state"
+        [queryParams]="item.queryParams"
+        [attr.target]="item.target"
+        tabindex="0"
+        pRipple
+      >
+        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+        <span class="layout-menuitem-text">{{ item.label }}</span>
+        <i
+          class="pi pi-fw pi-angle-down layout-submenu-toggler"
+          *ngIf="item.items"
+        ></i>
+      </a>
+      <ul
+        *ngIf="item.items && item.visible !== false"
+        [@children]="submenuAnimation"
+      >
+        <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
+          <li
+            app-menuitem
+            [item]="child"
+            [index]="i"
+            [parentKey]="key"
+            [class]="child.badgeClass"
+          ></li>
+        </ng-template>
+      </ul>
+    </ng-container>
+  `,
   animations: [
     trigger('children', [
       state(
@@ -59,12 +122,10 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
     public router: Router,
     private menuService: MenuService
   ) {
-    // Suscripción para el estado del menú
     this.menuSourceSubscription = this.menuService.menuSource$.subscribe(
       (value) => {
         Promise.resolve(null).then(() => {
           if (value.routeEvent) {
-            // Actualiza el estado activo basado en la ruta
             this.active =
               value.key === this.key || value.key.startsWith(this.key + '-')
                 ? true
@@ -80,13 +141,9 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
         });
       }
     );
-
-    // Suscripción para reiniciar el menú
     this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
       this.active = false;
     });
-
-    // Observa los eventos de navegación para actualizar el estado activo
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((params) => {
@@ -104,7 +161,6 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
       this.updateActiveStateFromRoute();
     }
   }
-
   /**
    * Actualiza el estado activo basado en la ruta actual.
    */
@@ -119,11 +175,11 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
       this.menuService.onMenuStateChange({ key: this.key, routeEvent: true });
     }
   }
-
   /**
    * Maneja el clic en un elemento del menú.
    * Realiza acciones como ejecutar un comando, expandir/cerrar el menú desplegable, etc.
    */
+
   public itemClick(event: Event): void {
     if (this.item.disabled) {
       event.preventDefault();
@@ -137,9 +193,8 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
     }
     this.menuService.onMenuStateChange({ key: this.key });
   }
-
   /**
-   * Obtiene el estado de la animación del submenú (expandido o colapsado).
+   *  Obtiene el estado de la animación del submenú (expandido o colapsado).
    */
   public get submenuAnimation(): 'collapsed' | 'expanded' {
     return this.root ? 'expanded' : this.active ? 'expanded' : 'collapsed';

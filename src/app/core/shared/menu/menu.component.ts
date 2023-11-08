@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LayoutService } from '../../services/ui/app.layout.service';
 
 /**
  * Componente de menu 
@@ -11,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
   public model: any[] = [];
-  constructor() {}
+  constructor(private _layoutService : LayoutService) {}
 
   ngOnInit(): void {
     this.model = [
@@ -22,6 +23,9 @@ export class MenuComponent implements OnInit {
             label: 'Home',
             icon: 'pi pi-fw pi-home',
             routerLink: ['/home'],
+            command: () => {
+              this._layoutService.onMenuToggle();
+            },
           },
         ],
       },
@@ -32,9 +36,13 @@ export class MenuComponent implements OnInit {
             label: 'Reporte Express',
             icon: 'pi pi-fw pi-id-card',
             routerLink: ['/reporte-express'],
+            command: () => {
+              this._layoutService.onMenuToggle();
+            },
           },
         ],
       },
     ];
   }
+
 }

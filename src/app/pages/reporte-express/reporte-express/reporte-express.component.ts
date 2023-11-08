@@ -10,6 +10,7 @@ import { ReporteExpressSateService } from 'src/app/domain/service/reporte-expres
 import { MessageService } from 'primeng/api';
 import { ISolicitudConsulta } from 'src/app/domain/interface/solicitudConsulta.interface';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { UtilsService } from 'src/app/core/services/utils.service';
 
 /**
  * Componente que maneja la generación de informes express.
@@ -51,8 +52,18 @@ export class ReporteExpressComponent implements OnInit {
     private fb: FormBuilder,
     private _siincoReporteExpressStateService: ReporteExpressSateService,
     private _messageService: MessageService,
-    private ngxService: NgxUiLoaderService
-  ) {
+    private ngxService: NgxUiLoaderService,
+    private _utilService :UtilsService
+  ) {}
+
+  // Métodos
+  ngOnInit(): void {
+    this._utilService.fnCambiarIdiomaCalendario();
+    this.crearFormulario();
+    this.obtenerQuerysDisponibles();
+   
+  }
+  crearFormulario() {
     this.queryForm = this.fb.group({
       textQuery: this.textQuery,
       numeroProducto: ['', []],
@@ -61,12 +72,6 @@ export class ReporteExpressComponent implements OnInit {
       fechaFin: ['', []],
     });
   }
-
-  // Métodos
-  ngOnInit(): void {
-    this.obtenerQuerysDisponibles();
-  }
-
   /**
    * Exporta los datos actuales a un archivo CSV.
    */
@@ -120,45 +125,61 @@ export class ReporteExpressComponent implements OnInit {
    * @param opcion - Opción seleccionada.
    */
   seleccionarOpcion(opcion: string) {
-    this.rangoFecha = false;
+    this.noProducto = false;
     this.noTienda = false;
+    this.rangoFecha = false;
+
     const seleccion = this.tipoConsulta.find((item) => item.value === opcion);
     this.objSolicitudConsulta = seleccion;
     const parametersString = this.objSolicitudConsulta.parameters;
-    const parametersArray = parametersString
-      .split(',')
-      .map((param: string) => param.trim());
-    parametersArray.forEach((param: string) => {
-      if (param.endsWith('S')) {
-        if (param.startsWith('TIENDA-')) {
-          this.noTienda = true;
-          this.queryForm.controls['numeroTienda'].setValidators([
-            Validators.required,
-            Validators.maxLength(5),
-          ]);
-          this.queryForm.controls['numeroTienda'].updateValueAndValidity();
-        } else if (param.startsWith('SKU-')) {
-          this.noProducto = true;
-          this.queryForm.controls['numeroProducto'].setValidators([
-            Validators.required,
-            Validators.maxLength(12),
-          ]);
-        } else if (param.startsWith('RANGO-')) {
-          this.rangoFecha = true;
-          this.queryForm.controls['fechaInicio'].setValidators([
-            Validators.required,
-          ]);
-          this.queryForm.controls['fechaInicio'].updateValueAndValidity();
-          this.queryForm.controls['fechaFin'].setValidators([
-            Validators.required,
-          ]);
-          this.queryForm.controls['fechaFin'].updateValueAndValidity();
+
+    if (parametersString) {
+      const parametersArray = parametersString
+        .split(',')
+        .map((param: string) => param.trim());
+      parametersArray.forEach((param: string) => {
+        if (param.endsWith('S')) {
+          if (param.startsWith('TIENDA-')) {
+            this.noTienda = true;
+            this.queryForm.controls['numeroTienda'].setValidators([
+              Validators.required,
+              Validators.maxLength(5),
+            ]);
+            this.queryForm.controls['numeroTienda'].updateValueAndValidity();
+          } else if (param.startsWith('SKU-')) {
+            this.noProducto = true;
+            this.queryForm.controls['numeroProducto'].setValidators([
+              Validators.required,
+              Validators.maxLength(12),
+            ]);
+          } else if (param.startsWith('RANGO-')) {
+            this.rangoFecha = true;
+            this.queryForm.controls['fechaInicio'].setValidators([
+              Validators.required,
+            ]);
+            this.queryForm.controls['fechaInicio'].updateValueAndValidity();
+            this.queryForm.controls['fechaFin'].setValidators([
+              Validators.required,
+            ]);
+            this.queryForm.controls['fechaFin'].updateValueAndValidity();
+          }
         }
+      });
+      if (seleccion) {
+        this.textQuery = seleccion.value;
+        this.updateLineNumbers();
       }
-    });
-    if (seleccion) {
-      this.textQuery = seleccion.value;
-      this.updateLineNumbers();
+    } else {
+      // this.queryForm.controls['numeroProducto'].setValidators([]);
+      // this.queryForm.controls['numeroProducto'].updateValueAndValidity();
+      // this.queryForm.controls['numeroTienda'].setValidators([]);
+      // this.queryForm.controls['numeroTienda'].updateValueAndValidity();
+      // this.queryForm.controls['rangoFecha'].setValidators([]);
+      // this.queryForm.controls['rangoFecha'].updateValueAndValidity();
+      if (seleccion) {
+        this.textQuery = seleccion.value;
+        this.updateLineNumbers();
+      }
     }
   }
 
@@ -211,17 +232,19 @@ export class ReporteExpressComponent implements OnInit {
       if (this.objSolicitudConsulta) {
         let sku = this.queryForm.controls['numeroProducto'].value || '';
         let nTienda = this.queryForm.controls['numeroTienda'].value || '';
-        let fechaInicio = this.queryForm.controls['fechaInicio'].value || '';
-        let fechaFin = this.queryForm.controls['fechaFin'].value || '';
+        let fechaInicio = new Date (this.queryForm.controls['fechaInicio'].value).toLocaleDateString('en-GB') || '';
+        let fechaFin = new Date (this.queryForm.controls['fechaFin'].value).toLocaleDateString('en-GB')  || '';
         try {
           this.tamanioNoProducto = true;
           this.tamanioNoTienda = true;
-          const solicitud: ISolicitudConsulta = {
+          let solicitud: ISolicitudConsulta = {
             iN_ID_QUERY: this.objSolicitudConsulta.id,
-            iN_PARAM01: sku.toString(),
-            iN_PARAM02: nTienda.toString(),
-            iN_PARAM03: fechaInicio.toString(),
-            iN_PARAM04: fechaFin.toString(),
+            iN_PARAM01: sku.toString().length > 0 ? sku.toString() : '',
+            iN_PARAM02: nTienda.toString().length > 0 ? nTienda.toString() : '',
+            iN_PARAM03:
+              fechaInicio.toString().length > 0 ? fechaInicio.toString() : '',
+            iN_PARAM04:
+              fechaFin.toString().length > 0 ? fechaFin.toString() : '',
             iN_PARAM05: '' || '',
             iN_PARAM06: '' || '',
             iN_PARAM07: '' || '',
@@ -239,6 +262,7 @@ export class ReporteExpressComponent implements OnInit {
           } else {
             this.showMessage(objDatos.messages, 'error', 'Error');
           }
+          this.ngOnInit();
           this.ngxService.stop();
         } catch (error) {
           this.showMessage('Error', 'error', 'Error');
