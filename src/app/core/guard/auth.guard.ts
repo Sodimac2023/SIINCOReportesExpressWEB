@@ -6,13 +6,12 @@ import {
   Route,
   Router,
   RouterStateSnapshot,
-  UrlTree,
 } from '@angular/router';
 import { LoginService } from 'src/app/auth/login/login.service';
-import { environment } from 'src/environments/environment';
 
 /**
  * Clase para valdiar acceso al Router
+ * @author fespana
  */
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {

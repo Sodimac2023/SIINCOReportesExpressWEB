@@ -12,7 +12,6 @@
           formControlName="usuario"
           maxlength="10"
         />
-        <!-- <span class="form-text text-red-600">El campo tiene muchos caracteres</span -->
       </div>
       <div class="col-12">
         <input
@@ -25,12 +24,6 @@
           minlength="minPassword"
         />
       </div>
-      <!-- <input
-          type="submit"
-          class="fadeIn fourth"
-          (click)="login()"
-          value="Ingresar"
-        /> -->
       <span class="form-text text-red-600" *ngIf="mensajeFlag">{{
         mensaje
       }}</span>

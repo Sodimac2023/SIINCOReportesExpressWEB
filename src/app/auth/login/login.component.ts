@@ -5,12 +5,16 @@ import { RespuestaGenerica } from 'src/app/core/interface/respuesta-generica';
 import { LoginService } from './login.service';
 import { Usuario } from 'src/app/core/interface/user.interface';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-
+/**
+ * Componente de Login 
+ * @author fespana
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
+
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   resultado?: RespuestaGenerica;
@@ -18,16 +22,7 @@ export class LoginComponent implements OnInit {
   mensajeFlag: boolean = false;
   mensaje: string = '';
 
-  get usuarioField() {
-    return this.loginForm.get('usuario');
-  }
-  get contrasenaField() {
-    return this.loginForm.get('contrasena');
-  }
-
   constructor(
-    // private toastr: ToastrService,
-    // private spinner: NgxSpinnerService,
     private fb: FormBuilder,
     private rout: Router,
     private _seguridad: LoginService,
@@ -39,13 +34,20 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * Método de inicio del componente.
+   * Inicializa el componente y realiza alguna acción al inicio.
+   */
   ngOnInit() {
-    this.getUsuario();
+    // this.getUsuario();
   }
 
-  // /** Obtiene el usuario loggueado en Siinco */
-  getUsuario() {
-    // this.spinner.show();
+  /**
+   * Obtener el usuario logueado en Siinco.
+   * Realiza una solicitud para obtener información del usuario logueado.
+   */
+  async getUsuario() {
+    this.ngxService.start();
     this._seguridad.lastUser().subscribe(
       (data) => {
         if (data) {
@@ -56,14 +58,23 @@ export class LoginComponent implements OnInit {
       },
       (err) => {}
     );
+    this.ngxService.stop();
   }
 
+  /**
+   * Limpiar el formulario de inicio de sesión.
+   * Restablece los campos del formulario a sus valores iniciales.
+   */
   clearLoginForm() {
     this.loginForm.controls['usuario'].setValue('');
     this.loginForm.controls['contrasena'].setValue('');
   }
 
-  login() {
+  /**
+   * Realizar el proceso de inicio de sesión.
+   * Valida el formulario y realiza la acción de inicio de sesión.
+   */
+  async login() {
     if (this.loginForm.invalid) {
       return;
     }
@@ -71,33 +82,23 @@ export class LoginComponent implements OnInit {
     const usuario = new Usuario();
     let user = this.loginForm.controls['usuario'].value;
     let pass = this.loginForm.controls['contrasena'].value;
-    usuario.USUARIO = user.toString().toUpperCase(); // Usa get() para obtener el valor del FormControl
+    usuario.USUARIO = user.toString().toUpperCase();
     usuario.CLAVE = pass.toString();
-
-    // this.spinner.show(); // Descomenta si estás utilizando algún spinner
-    this._seguridad.login(usuario).subscribe(
-      (data) => {
-        if (data.EstadoProceso) {
-          // this.toastr.success("Bienvenido " + data.Data.Name);
-          this.rout.navigate(['/reporte-express']);
-        } else {
-          this.mensajeFlag = true;
-          this.mensaje = data.Mensaje;
-          // this.toastr.info(data.Mensaje);
-        }
-        this._seguridad.setData(data);
-        // Coloca aquí la lógica que se ejecutaba en finalize
-      },
-      
-      (err) => {
+    let data = await this._seguridad.login(usuario);
+    try {
+      if (data.EstadoProceso) {
+        this.rout.navigate(['/reporte-express']);
+      } else {
         this.mensajeFlag = true;
-        this.mensaje = err
-        // Handle errors
-        // this._seguridad.setData(null, true);
-        // this.toastr.error(err);
-        // Coloca aquí la lógica que se ejecutaba en finalize para los errores
+        this.mensaje = data.Mensaje;
       }
-    );
+
+      this._seguridad.setData(data);
+    } catch (error) {
+      this.mensajeFlag = true;
+      this.mensaje = 'Error';
+      this._seguridad.setData(data, true);
+    }
     this.ngxService.stop();
   }
 }

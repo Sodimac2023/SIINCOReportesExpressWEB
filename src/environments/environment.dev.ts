@@ -10,9 +10,5 @@ export const environment = {
   showMenu: true, //Mostrar Menu
   showFooter: true, //Mostrar footer
   apiSiicoReporteExpress:'http://10.23.14.175:9156',
-
-
-  apiMultitask: 'http://10.23.14.175:9117',
-  apiPIM: 'http://10.23.14.209',
-  apiCostoImportados: 'http://10.23.14.175:9120',
+  urlAuthentication: 'http://10.23.14.225:8184/api/Autentication/',
 };

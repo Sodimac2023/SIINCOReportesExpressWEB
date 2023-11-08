@@ -5,6 +5,10 @@ import { environment } from '../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
+/**
+ * Componente que representa el diseño de administración de la aplicación.
+ * @author fespana
+ */
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
@@ -23,12 +27,11 @@ export class AdminLayoutComponent implements OnInit {
   ) {}
   public items!: MenuItem[];
   public home!: MenuItem;
+
   ngOnInit(): void {
     this.itemBreadcrumb$ = of<any>(location);
     this.itemBreadcrumb$.subscribe({
-      next: (response) => {
-        // console.log('admin-layout.component LINE 26 =>', response);
-      },
+      next: (response) => {},
     });
     this.items = [
       { label: 'Seguridad' },
@@ -39,6 +42,10 @@ export class AdminLayoutComponent implements OnInit {
     this.home = { icon: 'pi pi-home' };
   }
 
+  /**
+   * Devuelve la clase CSS para el contenedor del diseño.
+   * @returns Un objeto con las clases CSS correspondientes.
+   */
   public get containerClass(): any {
     return {
       'layout-theme-light': this._layoutService.config.colorScheme === 'light',

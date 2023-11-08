@@ -6,7 +6,6 @@
       : 'border-bluegray-600'
   "
 >
-
   <button
     type="button"
     #menubutton
@@ -60,16 +59,18 @@
       class="flex flex-column font-semibold sm:mb-2"
       style="color: var(--primary-color); margin-top: 5px"
     >
-      <span class="text-sm">{{name}}</span>
-      <small class="lg:text-right"
-        >{{cargo}}</small
-      >
+      <span class="text-sm">{{ name }}</span>
+      <small class="lg:text-right">{{ cargo }}</small>
     </div>
     <button type="button" class="p-link layout-topbar-button">
       <!-- <img width="35" height="35" alt="user" /> -->
       <i class="pi pi-user" style="font-size: 2rem"></i>
     </button>
-    <button type="button" class="p-link layout-topbar-button mr-4" (click)="onCerrarSesion()">
+    <button
+      type="button"
+      class="p-link layout-topbar-button mr-4"
+      (click)="onCerrarSesion()"
+    >
       <!-- <img width="35" height="35" alt="user" /> -->
       <i class="pi pi-sign-out" style="font-size: 2rem"></i>
     </button>

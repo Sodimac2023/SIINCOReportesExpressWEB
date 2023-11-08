@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ * Componente de menu 
+ * @author fespana
+ */
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',

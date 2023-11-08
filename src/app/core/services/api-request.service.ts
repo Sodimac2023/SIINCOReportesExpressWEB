@@ -14,14 +14,7 @@ export class ApiRequestService {
    * @param obj
    * @returns
    */
-  post<T>(url: string, obj: any): Observable<T> {
-    return this.http.post<T>(url, obj, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json;charset=UTF-8',
-      }),
-    });
-  }
-  public postNew<T>(url: string, obj: any): Promise<T> {
+  public post<T>(url: string, obj: any): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       this.http.post<T>(url, obj, {
         headers: new HttpHeaders({
@@ -75,22 +68,6 @@ export class ApiRequestService {
     return this.http.get<T>(url, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json;charset=UTF-8',
-      }),
-    });
-  }
-
-  /**
-   * Return request GET
-   * @param url
-   * @param obj
-   * @returns
-   */
-  getPIM<T>(url: string): Observable<T> {
-    return this.http.get<T>(url, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization:
-          'Basic ' + window.btoa('API DATALOG' + ':' + 'Datalog23'),
       }),
     });
   }

@@ -11,7 +11,6 @@
       [options]="tipoConsulta"
     >
     </p-dropdown>
-    <!-- <span class="form-text text-red-600">Debe Elegir una consulta </span> -->
   </div>
   <div
     class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-center lg:justify-content-end"
@@ -26,15 +25,6 @@
   </div>
 </div>
 <form [formGroup]="queryForm">
-  <!-- <div
-    class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-center lg:justify-content-end"
-  >
-    <p-button
-      label="Enviar Solicitud"
-      styleClass="p-button-raised"
-      (click)="enviarSolicitudConsulta()"
-    ></p-button>
-  </div> -->
   <p-blockUI [blocked]="blockedDocument"></p-blockUI>
   <p-toast></p-toast>
   <div class="py-2">
@@ -102,47 +92,44 @@
             </div>
           </div>
         </div>
-       
-          <div class="col-12 md:col-6 lg:col-3" *ngIf="rangoFecha">
-            <div class="grid">
-              <div class="col-12">
-                <div class="grid">
-                  <div class="col-12">
-                    <label class="font-bold">Fecha Inicio: </label>
-                  </div>
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="rangoFecha">
+          <div class="grid">
+            <div class="col-12">
+              <div class="grid">
+                <div class="col-12">
+                  <label class="font-bold">Fecha Inicio: </label>
                 </div>
-              </div>
-              <div class="col-12">
-                <p-calendar
-                  [showIcon]="true"
-                  formControlName="fechaInicio"
-                ></p-calendar>
               </div>
             </div>
+            <div class="col-12">
+              <p-calendar
+                [showIcon]="true"
+                formControlName="fechaInicio"
+              ></p-calendar>
+            </div>
           </div>
-          <div class="col-12 md:col-6 lg:col-3" *ngIf="rangoFecha">
-            <div class="grid">
-              <div class="col-12">
-                <div class="grid">
-                  <div class="col-12">
-                    <label class="font-bold">Fecha Fin: </label>
-                  </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3" *ngIf="rangoFecha">
+          <div class="grid">
+            <div class="col-12">
+              <div class="grid">
+                <div class="col-12">
+                  <label class="font-bold">Fecha Fin: </label>
                 </div>
               </div>
-              <div class="col-12">
-                <p-calendar
-                  [showIcon]="true"
-                  formControlName="fechaFin"
-                ></p-calendar>
-              </div>
+            </div>
+            <div class="col-12">
+              <p-calendar
+                [showIcon]="true"
+                formControlName="fechaFin"
+              ></p-calendar>
             </div>
           </div>
         </div>
       </div>
     </div>
-  
+  </div>
 </form>
-
 <div class="card-text-area">
   <div class="sql-editor">
     <div class="editor-container">
@@ -178,9 +165,7 @@
     <table class="mi-tabla">
       <thead>
         <tr>
-          <!-- Verifica si resultado tiene elementos -->
           <ng-container *ngIf="resultado.length > 0">
-            <!-- Utiliza el primer elemento (índice 0) para obtener los nombres de las columnas -->
             <th *ngFor="let columna of obtenerNombresColumnas(resultado[0])">
               {{ columna }}
             </th>
@@ -188,7 +173,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Utiliza la directiva *ngFor de ngx-pagination para iterar sobre los elementos de la página actual -->
         <tr
           *ngFor="
             let resultadoItem of resultado
@@ -200,7 +184,6 @@
                   }
           "
         >
-          <!-- Itera sobre las propiedades de cada objeto para mostrar los valores -->
           <td *ngFor="let columna of obtenerNombresColumnas(resultadoItem)">
             {{ resultadoItem[columna] }}
           </td>
@@ -209,7 +192,6 @@
     </table>
   </div>
   <div class="paginador">
-    <!-- Agrega el paginador aquí -->
     <pagination-controls
       (pageChange)="paginaActual = $event"
       id="miTabla"

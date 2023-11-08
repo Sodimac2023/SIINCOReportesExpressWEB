@@ -21,9 +21,7 @@
 input,
 textarea,
 select {
-  // border: 1px solid #dee2e6 !important;
   height: 2rem !important;
-  // font-size: 0.813rem !important;
   width: 100% !important;
 
   @media (min-width: 1600px) and (max-width: 2560px) {
@@ -49,12 +47,6 @@ select {
 
 .pading {
   padding-bottom: 0 !important;
-  // @media (min-width: 1600px) and (max-width: 2560px) {
-  //   padding-bottom: 5px !important;
-  // }
-  // @media (min-width: 857px) and (max-width: 991px) {
-  //   padding-bottom: 0.53rem !important;
-  // }
 }
 
 .p-datepicker table td {

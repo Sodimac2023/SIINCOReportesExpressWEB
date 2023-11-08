@@ -11,6 +11,10 @@ import { MessageService } from 'primeng/api';
 import { ISolicitudConsulta } from 'src/app/domain/interface/solicitudConsulta.interface';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 
+/**
+ * Componente que maneja la generación de informes express.
+ * @author fespana
+ */
 @Component({
   selector: 'app-reporte-express',
   templateUrl: './reporte-express.component.html',
@@ -18,6 +22,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   styleUrls: ['./reporte-express.component.scss'],
 })
 export class ReporteExpressComponent implements OnInit {
+  // Propiedades y variables miembro
   public resultado: any[] = [];
   public queryForm!: FormGroup;
   public blockedDocument: boolean = false;
@@ -30,10 +35,10 @@ export class ReporteExpressComponent implements OnInit {
   public elementosPorPagina: number = 10;
   public objSolicitudConsulta: any = null;
   public noTienda: boolean = false;
+  public noProducto: boolean = false;
   public rangoFecha: boolean = false;
   public tamanioNoProducto: boolean = false;
   public tamanioNoTienda: boolean = false;
-
   public tipoConsulta: {
     label: string;
     value: string;
@@ -41,6 +46,7 @@ export class ReporteExpressComponent implements OnInit {
     parameters: string;
   }[] = [];
 
+  // Constructor
   constructor(
     private fb: FormBuilder,
     private _siincoReporteExpressStateService: ReporteExpressSateService,
@@ -49,17 +55,21 @@ export class ReporteExpressComponent implements OnInit {
   ) {
     this.queryForm = this.fb.group({
       textQuery: this.textQuery,
-      numeroProducto: ['', [Validators.required, Validators.maxLength(12)]],
+      numeroProducto: ['', []],
       numeroTienda: ['', []],
       fechaInicio: ['', []],
       fechaFin: ['', []],
     });
   }
 
+  // Métodos
   ngOnInit(): void {
     this.obtenerQuerysDisponibles();
   }
 
+  /**
+   * Exporta los datos actuales a un archivo CSV.
+   */
   exportarExcel() {
     if (this.resultado.length > 0) {
       const csvData = Papa.unparse(this.resultado);
@@ -73,6 +83,11 @@ export class ReporteExpressComponent implements OnInit {
     }
   }
 
+  /**
+   * Maneja el cambio de estado del checkbox.
+   * @param evt - Evento de cambio.
+   * @param div - Número de división.
+   */
   chkAtrrchanged(evt: any, div: number) {
     if (evt.checked) {
       switch (div) {
@@ -89,6 +104,9 @@ export class ReporteExpressComponent implements OnInit {
     }
   }
 
+  /**
+   * Actualiza los números de línea en el área de texto.
+   */
   updateLineNumbers() {
     const lines = this.textQuery.split('\n');
     this.lineNumbers = Array.from(
@@ -97,6 +115,10 @@ export class ReporteExpressComponent implements OnInit {
     );
   }
 
+  /**
+   * Selecciona una opción del menú desplegable.
+   * @param opcion - Opción seleccionada.
+   */
   seleccionarOpcion(opcion: string) {
     this.rangoFecha = false;
     this.noTienda = false;
@@ -115,8 +137,12 @@ export class ReporteExpressComponent implements OnInit {
             Validators.maxLength(5),
           ]);
           this.queryForm.controls['numeroTienda'].updateValueAndValidity();
-          // } else if (param.startsWith('SKU-')) {
-          //   this.noProducto = true;
+        } else if (param.startsWith('SKU-')) {
+          this.noProducto = true;
+          this.queryForm.controls['numeroProducto'].setValidators([
+            Validators.required,
+            Validators.maxLength(12),
+          ]);
         } else if (param.startsWith('RANGO-')) {
           this.rangoFecha = true;
           this.queryForm.controls['fechaInicio'].setValidators([
@@ -136,10 +162,18 @@ export class ReporteExpressComponent implements OnInit {
     }
   }
 
+  /**
+   * Obtiene los nombres de las columnas del objeto.
+   * @param objeto - Objeto del que se obtendrán los nombres de las columnas.
+   * @returns Un array con los nombres de las columnas.
+   */
   obtenerNombresColumnas(objeto: any): string[] {
     return Object.keys(objeto);
   }
 
+  /**
+   * Obtiene los tipos de consulta disponibles.
+   */
   async obtenerQuerysDisponibles() {
     this.ngxService.start();
     try {
@@ -168,6 +202,9 @@ export class ReporteExpressComponent implements OnInit {
     }
   }
 
+  /**
+   * Envía una solicitud de consulta.
+   */
   async enviarSolicitudConsulta() {
     if (this.queryForm.valid) {
       this.ngxService.start();
@@ -214,6 +251,11 @@ export class ReporteExpressComponent implements OnInit {
     }
   }
 
+  /**
+   * Procesa los valores de los datos obtenidos.
+   * @param data - Datos a procesar.
+   * @returns Un array con los datos procesados.
+   */
   procesarValores(data: any[]): any[] {
     return data.map((item) => {
       const processedItem: any = {};
@@ -228,31 +270,38 @@ export class ReporteExpressComponent implements OnInit {
     });
   }
 
+  /**
+   * Verifica si un campo del formulario es válido y se ha tocado.
+   * @param campo - Nombre del campo a verificar.
+   * @returns Verdadero si el campo no es válido y se ha tocado, falso en caso contrario.
+   */
   campoNoValido(campo: string) {
     return (
       this.queryForm.get(campo)?.invalid && this.queryForm.get(campo)?.touched
     );
   }
 
+  /**
+   * Obtiene los mensajes de error para un campo específico.
+   * @param nombreCampo - Nombre del campo para el cual se desean obtener los mensajes de error.
+   * @returns Los mensajes de error del campo especificado.
+   */
   listaErroresMensajes(nombreCampo: string): string {
     const errors = this.queryForm.get(nombreCampo)?.errors;
-
     if (errors?.['required']) return 'Este campo es obligatorio.';
-    // if (errors?.['minlength']) return 'Debe agregar más caracteres.';
     if (errors?.['maxlength'] && nombreCampo === 'numeroProducto')
       return 'No puede superar los 12 caracteres.';
     if (errors?.['maxlength'] && nombreCampo === 'numeroTienda')
       return 'No puede superar los 5 caracteres.';
-    // if (errors?.['min']) return 'Debe ser de mínimo 1';
-    // if (errors?.['max'])
-    //   return 'Debe ser máximo de ' + VALOR_MAXIMO_CARACTERES_CLASIFICADOR;
-    // if (errors?.['pattern'] && nombreCampo === 'Descripcion')
-    //   return 'No se permiten espacios ni caracteres especiales.';
-    // if (errors?.['pattern'] && nombreCampo === 'TopeCaracteres')
-    //   return 'No puede contener caracteres de texto.';
-
     return '';
   }
+
+  /**
+   * Muestra un mensaje en la interfaz de usuario.
+   * @param detail - Detalle del mensaje.
+   * @param severity - Severidad del mensaje (por ejemplo, 'success', 'error').
+   * @param summary - Resumen del mensaje.
+   */
   showMessage(detail: string, severity: string, summary: string): void {
     this._messageService.add({
       severity: severity,

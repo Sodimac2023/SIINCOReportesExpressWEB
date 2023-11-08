@@ -4,7 +4,7 @@ import { ValidationErrors, AbstractControl } from '@angular/forms';
  * Retorna {emailInvalido: true} si un correo no tiene
  * una estructura valida
  * @param control: AbstractControl, controlador del formulario
- * @author fmendoza
+ * @author fespana
  * @returns ValidationErrors | null
  */
 export function emailValidator(

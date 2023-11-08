@@ -15,9 +15,10 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { OnlyNumbersDirective } from 'src/app/core/directive/only-numbers.directive';
 
 @NgModule({
-  declarations: [ReporteExpressComponent],
+  declarations: [ReporteExpressComponent,OnlyNumbersDirective],
 
   imports: [
     CommonModule,
