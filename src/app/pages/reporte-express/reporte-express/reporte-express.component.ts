@@ -40,6 +40,7 @@ export class ReporteExpressComponent implements OnInit {
   public rangoFecha: boolean = false;
   public tamanioNoProducto: boolean = false;
   public tamanioNoTienda: boolean = false;
+  public selectOption: boolean = false;
   public tipoConsulta: {
     label: string;
     value: string;
@@ -53,7 +54,7 @@ export class ReporteExpressComponent implements OnInit {
     private _siincoReporteExpressStateService: ReporteExpressSateService,
     private _messageService: MessageService,
     private ngxService: NgxUiLoaderService,
-    private _utilService :UtilsService
+    private _utilService: UtilsService
   ) {}
 
   // Métodos
@@ -61,7 +62,6 @@ export class ReporteExpressComponent implements OnInit {
     this._utilService.fnCambiarIdiomaCalendario();
     this.crearFormulario();
     this.obtenerQuerysDisponibles();
-   
   }
   crearFormulario() {
     this.queryForm = this.fb.group({
@@ -128,6 +128,7 @@ export class ReporteExpressComponent implements OnInit {
     this.noProducto = false;
     this.noTienda = false;
     this.rangoFecha = false;
+    this.selectOption = true;
 
     const seleccion = this.tipoConsulta.find((item) => item.value === opcion);
     this.objSolicitudConsulta = seleccion;
@@ -232,8 +233,14 @@ export class ReporteExpressComponent implements OnInit {
       if (this.objSolicitudConsulta) {
         let sku = this.queryForm.controls['numeroProducto'].value || '';
         let nTienda = this.queryForm.controls['numeroTienda'].value || '';
-        let fechaInicio = new Date (this.queryForm.controls['fechaInicio'].value).toLocaleDateString('en-GB') || '';
-        let fechaFin = new Date (this.queryForm.controls['fechaFin'].value).toLocaleDateString('en-GB')  || '';
+        let fechaInicio =
+          new Date(
+            this.queryForm.controls['fechaInicio'].value
+          ).toLocaleDateString('en-GB') || '';
+        let fechaFin =
+          new Date(
+            this.queryForm.controls['fechaFin'].value
+          ).toLocaleDateString('en-GB') || '';
         try {
           this.tamanioNoProducto = true;
           this.tamanioNoTienda = true;
