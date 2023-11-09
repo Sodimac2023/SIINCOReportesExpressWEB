@@ -38,9 +38,8 @@ export class ReporteExpressComponent implements OnInit {
   public noTienda: boolean = false;
   public noProducto: boolean = false;
   public rangoFecha: boolean = false;
-  public tamanioNoProducto: boolean = false;
-  public tamanioNoTienda: boolean = false;
   public selectOption: boolean = false;
+  public selectOption1: boolean = false;
   public tipoConsulta: {
     label: string;
     value: string;
@@ -128,13 +127,12 @@ export class ReporteExpressComponent implements OnInit {
     this.noProducto = false;
     this.noTienda = false;
     this.rangoFecha = false;
-    this.selectOption = true;
-
+    this.selectOption1 = true;
     const seleccion = this.tipoConsulta.find((item) => item.value === opcion);
     this.objSolicitudConsulta = seleccion;
     const parametersString = this.objSolicitudConsulta.parameters;
-
     if (parametersString) {
+      this.selectOption = true;
       const parametersArray = parametersString
         .split(',')
         .map((param: string) => param.trim());
@@ -171,12 +169,8 @@ export class ReporteExpressComponent implements OnInit {
         this.updateLineNumbers();
       }
     } else {
-      // this.queryForm.controls['numeroProducto'].setValidators([]);
-      // this.queryForm.controls['numeroProducto'].updateValueAndValidity();
-      // this.queryForm.controls['numeroTienda'].setValidators([]);
-      // this.queryForm.controls['numeroTienda'].updateValueAndValidity();
-      // this.queryForm.controls['rangoFecha'].setValidators([]);
-      // this.queryForm.controls['rangoFecha'].updateValueAndValidity();
+      this.crearFormulario();
+      this.selectOption = false;
       if (seleccion) {
         this.textQuery = seleccion.value;
         this.updateLineNumbers();
@@ -242,16 +236,15 @@ export class ReporteExpressComponent implements OnInit {
             this.queryForm.controls['fechaFin'].value
           ).toLocaleDateString('en-GB') || '';
         try {
-          this.tamanioNoProducto = true;
-          this.tamanioNoTienda = true;
+          console.log("fecha",fechaInicio )
           let solicitud: ISolicitudConsulta = {
             iN_ID_QUERY: this.objSolicitudConsulta.id,
             iN_PARAM01: sku.toString().length > 0 ? sku.toString() : '',
             iN_PARAM02: nTienda.toString().length > 0 ? nTienda.toString() : '',
             iN_PARAM03:
-              fechaInicio.toString().length > 0 ? fechaInicio.toString() : '',
+              fechaInicio !== "Invalid Date" ? fechaInicio.toString() : '',
             iN_PARAM04:
-              fechaFin.toString().length > 0 ? fechaFin.toString() : '',
+              fechaFin !== "Invalid Date" ? fechaFin.toString() : '',
             iN_PARAM05: '' || '',
             iN_PARAM06: '' || '',
             iN_PARAM07: '' || '',

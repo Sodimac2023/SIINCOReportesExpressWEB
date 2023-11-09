@@ -9,6 +9,6 @@ export const environment = {
   showHeader: true, //Mostrar header
   showMenu: true, //Mostrar Menu
   showFooter: true, //Mostrar footer
-  apiSiicoReporteExpress:'https://10.23.14.225:8060',
+  apiSiicoReporteExpress:'https://hcbogdt4225.sodimacpr.corp:8060/',
   urlAuthentication: 'http://10.23.14.225:8184/api/Autentication/',
 };

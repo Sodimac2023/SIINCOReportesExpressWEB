@@ -132,7 +132,7 @@
     </div>
   </div>
 </form>
-<div class="card-text-area" *ngIf="selectOption">
+<div class="card-text-area" *ngIf="selectOption1">
   <div class="sql-editor">
     <div class="editor-container">
       <div class="line-numbers">
@@ -151,7 +151,7 @@
   </div>
 </div>
 
-<div class="tabla-result" *ngIf="selectOption">
+<div class="tabla-result" *ngIf="selectOption1">
   <div
     class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-start lg:justify-content-start"
   >
@@ -163,7 +163,7 @@
       (click)="exportarExcel()"
     ></p-button>
   </div>
-  <div class="tabla-container" *ngIf="selectOption">
+  <div class="tabla-container" *ngIf="selectOption1">
     <table class="mi-tabla">
       <thead>
         <tr>
@@ -193,7 +193,7 @@
       </tbody>
     </table>
   </div>
-  <div class="paginador" *ngIf="selectOption">
+  <div class="paginador" *ngIf="selectOption1">
     <pagination-controls
       (pageChange)="paginaActual = $event"
       id="miTabla"
