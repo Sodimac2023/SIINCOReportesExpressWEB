@@ -193,6 +193,7 @@
       </tbody>
     </table>
   </div>
+  <div *ngIf="resultado.length === 0">No hay resultados para esta consulta</div>
   <div class="paginador" *ngIf="activeResponseTable">
     <pagination-controls
       (pageChange)="paginaActual = $event"

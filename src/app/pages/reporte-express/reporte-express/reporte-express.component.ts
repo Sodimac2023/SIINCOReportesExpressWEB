@@ -132,6 +132,7 @@ export class ReporteExpressComponent implements OnInit {
     this.activeTextAreaQuery = true;
     this.activeResponseTable = false;
     this.resultado = [];
+    this.crearFormulario();
     const seleccion = this.tipoConsulta.find((item) => item.value === opcion);
     this.objSolicitudConsulta = seleccion;
     const parametersString = this.objSolicitudConsulta.parameters;
@@ -246,9 +247,8 @@ export class ReporteExpressComponent implements OnInit {
             iN_PARAM01: sku.toString().length > 0 ? sku.toString() : '',
             iN_PARAM02: nTienda.toString().length > 0 ? nTienda.toString() : '',
             iN_PARAM03:
-              fechaInicio !== "Invalid Date" ? fechaInicio.toString() : '',
-            iN_PARAM04:
-              fechaFin !== "Invalid Date" ? fechaFin.toString() : '',
+              fechaInicio !== 'Invalid Date' ? fechaInicio.toString() : '',
+            iN_PARAM04: fechaFin !== 'Invalid Date' ? fechaFin.toString() : '',
             iN_PARAM05: '' || '',
             iN_PARAM06: '' || '',
             iN_PARAM07: '' || '',
