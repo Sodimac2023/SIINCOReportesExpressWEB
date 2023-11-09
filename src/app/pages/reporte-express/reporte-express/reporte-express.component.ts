@@ -38,8 +38,10 @@ export class ReporteExpressComponent implements OnInit {
   public noTienda: boolean = false;
   public noProducto: boolean = false;
   public rangoFecha: boolean = false;
-  public selectOption: boolean = false;
-  public selectOption1: boolean = false;
+  public withParameters: boolean = false;
+  public activeTextAreaQuery: boolean = false;
+  public activeResponseTable: boolean = false;
+
   public tipoConsulta: {
     label: string;
     value: string;
@@ -127,12 +129,14 @@ export class ReporteExpressComponent implements OnInit {
     this.noProducto = false;
     this.noTienda = false;
     this.rangoFecha = false;
-    this.selectOption1 = true;
+    this.activeTextAreaQuery = true;
+    this.activeResponseTable = false;
+    this.resultado = [];
     const seleccion = this.tipoConsulta.find((item) => item.value === opcion);
     this.objSolicitudConsulta = seleccion;
     const parametersString = this.objSolicitudConsulta.parameters;
     if (parametersString) {
-      this.selectOption = true;
+      this.withParameters = true;
       const parametersArray = parametersString
         .split(',')
         .map((param: string) => param.trim());
@@ -170,7 +174,7 @@ export class ReporteExpressComponent implements OnInit {
       }
     } else {
       this.crearFormulario();
-      this.selectOption = false;
+      this.withParameters = false;
       if (seleccion) {
         this.textQuery = seleccion.value;
         this.updateLineNumbers();
@@ -222,6 +226,7 @@ export class ReporteExpressComponent implements OnInit {
    * Envía una solicitud de consulta.
    */
   async enviarSolicitudConsulta() {
+    this.activeResponseTable = true;
     if (this.queryForm.valid) {
       this.ngxService.start();
       if (this.objSolicitudConsulta) {
@@ -236,7 +241,6 @@ export class ReporteExpressComponent implements OnInit {
             this.queryForm.controls['fechaFin'].value
           ).toLocaleDateString('en-GB') || '';
         try {
-          console.log("fecha",fechaInicio )
           let solicitud: ISolicitudConsulta = {
             iN_ID_QUERY: this.objSolicitudConsulta.id,
             iN_PARAM01: sku.toString().length > 0 ? sku.toString() : '',

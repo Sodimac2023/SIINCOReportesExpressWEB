@@ -24,7 +24,7 @@
     ></p-button>
   </div>
 </div>
-<form [formGroup]="queryForm" *ngIf="selectOption">
+<form [formGroup]="queryForm" *ngIf="withParameters">
   <p-blockUI [blocked]="blockedDocument"></p-blockUI>
   <p-toast></p-toast>
   <div class="py-2">
@@ -132,7 +132,7 @@
     </div>
   </div>
 </form>
-<div class="card-text-area" *ngIf="selectOption1">
+<div class="card-text-area" *ngIf="activeTextAreaQuery">
   <div class="sql-editor">
     <div class="editor-container">
       <div class="line-numbers">
@@ -151,7 +151,7 @@
   </div>
 </div>
 
-<div class="tabla-result" *ngIf="selectOption1">
+<div class="tabla-result" *ngIf="activeResponseTable">
   <div
     class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-start lg:justify-content-start"
   >
@@ -163,7 +163,7 @@
       (click)="exportarExcel()"
     ></p-button>
   </div>
-  <div class="tabla-container" *ngIf="selectOption1">
+  <div class="tabla-container" *ngIf="activeResponseTable">
     <table class="mi-tabla">
       <thead>
         <tr>
@@ -193,7 +193,7 @@
       </tbody>
     </table>
   </div>
-  <div class="paginador" *ngIf="selectOption1">
+  <div class="paginador" *ngIf="activeResponseTable">
     <pagination-controls
       (pageChange)="paginaActual = $event"
       id="miTabla"
