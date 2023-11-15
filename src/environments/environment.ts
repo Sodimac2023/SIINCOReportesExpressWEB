@@ -13,8 +13,9 @@ export const environment = {
   showHeader: true, //Mostrar header
   showMenu: true, //Mostrar Menu
   showFooter: true, //Mostrar footer
-  apiSiicoReporteExpress: 'http://10.23.14.175:9156',
-  urlAuthentication: 'http://localhost:62607/api/Autentication/',
+  apiSiicoReporteExpress:'http://10.23.14.175:9156',
+ // urlAuthentication: 'http://localhost:62607/api/Autentication/',
+  urlAuthentication: 'http://10.23.14.225:8184/api/Autentication/',
 };
 
 /*
