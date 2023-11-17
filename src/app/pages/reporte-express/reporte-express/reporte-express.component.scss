@@ -1,81 +1,78 @@
+.card-text-area {
+  width: 100%;
+  height: 300px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  align-content: center;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  z-index: 20;
+}
 
-  .card-text-area {
-    width: 100%;
-    height: 100% !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    align-content: center;
-    margin-bottom: 15px;
-    margin-top: 10px;
-  }
+.sql-editor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100% !important;
+  width: 100%;
+}
+.editor-container {
+  display: flex;
+  width: 100%;
+  height: 100% !important;
+  border-radius: 4px;
+  border: 1px solid #969696f5;
+  overflow-y: scroll;
+}
 
-  .sql-editor {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100% !important;
-    width: 100%;
-  }
-  .editor-container {
-    display: flex;
-    width: 100%;
-    height: 100% !important;
-    border-radius: 4px;
-    border: 1px solid #969696f5;
-  }
-  
-  .line-numbers {
-    font-family: monospace;
-    width: 5%;
-    padding: 0 10px;
-    border-right: 1px solid #ccc;
-    height: 100% !important;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .sql-input {
-    width: 95%;
-    flex: 1;
-    border: none;
-    outline: none;
-    resize: none;
-    font-family: monospace;
-    padding: 0 10px;
-    height: 100% !important;
-  }
-  .textarea{
-    height: 100% !important;
-    resize: none;
-  }
-  .tabla-container {
-    max-width:95%; 
-    overflow-x: auto; 
-  }
-  
-  .mi-tabla {
-    min-width: 100%;
-  }
-  
-  .mi-tabla th, .mi-tabla td {
-    border: 1px solid #ddd; 
-    padding: 6px;
-    text-align: left; 
-  }
-  
-  .mi-tabla th {
-    background-color: #f2f2f2; 
-  }
-  .tabla-result {
-    width: 100%;
-    height: 100%;
-  }
-  .paginador{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px; 
-  }
+.line-numbers {
+  font-family: monospace;
+  width: 5%;
+  padding: 0 10px;
+  border-right: 1px solid #ccc;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 0;
+}
+.textarea-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+.textarea {
+  height: 300% !important;
+  resize: none;
+  overflow-y: hidden;
+}
+.tabla-container {
+  max-width: 95%;
+  overflow-x: auto;
+}
+
+.mi-tabla {
+  min-width: 100%;
+}
+
+.mi-tabla th,
+.mi-tabla td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: left;
+}
+
+.mi-tabla th {
+  background-color: #f2f2f2;
+}
+.tabla-result {
+  width: 100%;
+  height: 100%;
+}
+.paginador {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}

@@ -138,15 +138,17 @@
       <div class="line-numbers">
         <div *ngFor="let line of lineNumbers">{{ line }}</div>
       </div>
-      <textarea
-        disabled="true"
-        [rows]="lineNumbers.length"
-        cols="30"
-        class="textarea"
-        pInputTextarea
-        [(ngModel)]="textQuery"
-        (input)="updateLineNumbers()"
-      ></textarea>
+      <div class="textarea-container">
+        <textarea
+          class="textarea"
+          disabled="true"
+          [rows]="lineNumbers.length"
+          cols="30"
+          pInputTextarea
+          [(ngModel)]="textQuery"
+          (input)="updateLineNumbers()"
+        ></textarea>
+      </div>
     </div>
   </div>
 </div>
@@ -156,7 +158,7 @@
     class="col-12 md:col-12 lg:col-3 pt-5 flex justify-content-center md:justify-content-start lg:justify-content-start"
   >
     <p-button
-      label="Exportar a Excel"
+      label="Exportar datos"
       styleClass="p-button-raised"
       *ngIf="resultado.length > 0"
       class="btn-exportar"
